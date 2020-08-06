@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Random;
 
 @RestController
@@ -44,6 +45,12 @@ public class IndexResource {
         yulu.setCaiCount(yulu.getCaiCount()+1);
         mongo.save(yulu);
         return yulu.getCaiCount();
+    }
+
+    public List<DataYulu> getTop10() {
+        log.info("获取语录排行榜");
+
+        return null;
     }
 
 
