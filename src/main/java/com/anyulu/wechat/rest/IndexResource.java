@@ -57,10 +57,10 @@ public class IndexResource {
         return yulu.getCaiCount();
     }
 
-    @GetMapping("/rank")
-    public Page<DataYulu> getRank(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
-        log.info("获取语录排行榜");
-        PageRequest pageRequest = PageRequest.of(pageNum - 1, pageSize);
+    @GetMapping("/rank/{pageNo}/{pageSize}")
+    public Page<DataYulu> getRank(@PathVariable Integer pageNo, @PathVariable Integer pageSize) {
+        log.info("获取语录排行榜 pageNo :{}, pageSize :{}", pageNo, pageSize);
+        PageRequest pageRequest = PageRequest.of(pageNo - 1, pageSize);
         Query query = new Query();
         query.with(Sort.by(
                 Sort.Order.desc("zanCount")
@@ -76,6 +76,7 @@ public class IndexResource {
     public List<DataYulu> search(@PathVariable String keyword) {
         log.info("根据关键词搜索 :{}",keyword);
         Query query = new Query();
+        query.limit(100);
         Pattern pattern=Pattern.compile("^.*"+keyword+".*$", Pattern.CASE_INSENSITIVE);
         query.addCriteria(Criteria.where("text").regex(pattern));
         List<DataYulu> dataYulus = mongo.find(query, DataYulu.class);
